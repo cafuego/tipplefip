@@ -3,6 +3,17 @@
  * tipplefip - teeny tiny php based template engine.
  *
  * Named after the silly way to pronounce .tpl.php
+ *
+ * This snippet uses a keyed input array to replace template
+ * values in a text string (or file).
+ *
+ * $output = "My name is {{NAME}}.";
+ * $data = array('name' => 'Cafuego');
+ *   --> "My name is Cafuego.";
+ *
+ * $output = "{{IF:SURNAME}}My surname is {{SURNAME}}.{{/IF}}";
+ * $data = array('name' => 'Cafuego');
+ *   --> "".
  */
 
 // Output data. Usually templated :-)
