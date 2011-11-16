@@ -38,7 +38,8 @@ class Tipplefip {
   }
 
   function display() {
-    print $this->parse();
+    $this->parse();
+    print $this->output;
   }
 
   function inlineTemplate($template) {
@@ -83,6 +84,6 @@ class Tipplefip {
     $this->output = preg_replace("/\{\{([A-Z])+\}\}/", "", $this->output);
     $this->output = preg_replace("/\{\{([A-Z])+\|H\}\}/", "", $this->output);
 
-    return $this->output;
+    // Don't return, means recursing goes wonky.
   }
 }
