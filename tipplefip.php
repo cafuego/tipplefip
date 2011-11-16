@@ -32,8 +32,25 @@ class Tipplefip {
 		$this->output = $output;
 		$this->data = $data;
 	}
+	
+	function assign($data) {
+		$this->data = $data;
+	}
+	
+	function display() {
+		print $this->parse();
+	}
+	
+	function inlineTemplate($template) {
+		$this->output = $template;
+	}
+	
+	function loadTemplate($template_path) {
+		if (!is_file($template_path) || !is_readable($template_path)) return '';
+		$this->output = file_get_contents($template_path);
+	}
 
-	function parse() {
+	private function parse() {
 
 		foreach ($this->data as $key => $value) {
 		  $txt = strtoupper($key);
@@ -61,10 +78,10 @@ class Tipplefip {
 		}
 
 		// Cleanup unused template vars.
-		$this->output = preg_replace("/\{\{([A-Z])+\}\}/", $this->output);
-		$this->output = preg_replace("/\{\{([A-Z])+\|H\}\}/", $this->output);
+		$this->output = preg_replace("/\{\{([A-Z])+\}\}/", "", $this->output);
+		$this->output = preg_replace("/\{\{([A-Z])+\|H\}\}/", "", $this->output);
 		
-		print $this->output;
+		return $this->output;
 
 	}
 
