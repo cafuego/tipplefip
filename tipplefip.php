@@ -19,20 +19,20 @@
  * $data = array('link' => 'clicky thing', 'href' => '/a test link');
  *   --> "Click this <a href='%2Fa%20test%20link'>clicky thing</a>.".
  */
- 
- class Tipplefip {
- 
- 	// Output data. Usually templated :-)
- 	private $output;
- 	
- 	// A keyed array with replacement values.
- 	private $data;
- 
-	function __construct($output='', $data=array()) {           
+
+class Tipplefip {
+
+	// Output data. Usually templated :-)
+	private $output;
+	
+	// A keyed array with replacement values.
+	private $data;
+
+	function __construct($output = '', $data = array()) {
 		$this->output = $output;
 		$this->data = $data;
-	}  
- 
+	}
+
 	function parse() {
 
 		foreach ($this->data as $key => $value) {
