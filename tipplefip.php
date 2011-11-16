@@ -59,6 +59,10 @@ class Tipplefip {
 		  $this->output = strtr($this->output, array("{{{$txt}}}" => $value));
 		  $this->output = strtr($this->output, array("{{{$txt}|H}}" => rawurlencode($value)));
 		}
+
+		// Cleanup unused template vars.
+		$this->output = preg_replace("/\{\{([A-Z])+\}\}/", $this->output);
+		$this->output = preg_replace("/\{\{([A-Z])+\|H\}\}/", $this->output);
 		
 		print $this->output;
 
