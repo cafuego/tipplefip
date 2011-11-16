@@ -22,67 +22,67 @@
 
 class Tipplefip {
 
-	// Output data. Usually templated :-)
-	private $output;
-	
-	// A keyed array with replacement values.
-	private $data;
+  // Output data. Usually templated :-)
+  private $output;
 
-	function __construct($output = '', $data = array()) {
-		$this->output = $output;
-		$this->data = $data;
-	}
-	
-	function assign($data) {
-		$this->data = $data;
-	}
-	
-	function display() {
-		print $this->parse();
-	}
-	
-	function inlineTemplate($template) {
-		$this->output = $template;
-	}
-	
-	function loadTemplate($template_path) {
-		if (!is_file($template_path) || !is_readable($template_path)) return '';
-		$this->output = file_get_contents($template_path);
-	}
+  // A keyed array with replacement values.
+  private $data;
 
-	private function parse() {
+  function __construct($output = '', $data = array()) {
+    $this->output = $output;
+    $this->data = $data;
+  }
 
-		foreach ($this->data as $key => $value) {
-		  $txt = strtoupper($key);
-		
-		  // Straight replace.
-		  if (strpos($this->output, "{{IF:{$txt}}}") !== FALSE) {
-		    if (strlen($value)) {
-		      $this->output = preg_replace("/\{\{IF:{$txt}\}\}(.*)\{\{{$txt}\}\}(.*)\{\{\/IF\}\}/", "\\1{$value}\\2", $this->output);
-		    } else {
-		      $this->output = preg_replace("/\{\{IF:{$txt}\}\}(.*)\{\{\/IF\}\}/", "", $this->output);
-		    }
-		  }
-		
-		  // URLencoded - yay.
-		  if (strpos($this->output, "{{IF:{$txt}|H}}") !== FALSE) {
-		    $hvalue = rawurlencode($value);
-		    if (strlen($hvalue)) {
-		      $this->output = preg_replace("/\{\{IF:{$txt}\}\}(.*)\{\{{$txt}\|H\}\}(.*)\{\{\/IF\}\}/", "\\1{$hvalue}\\2", $this->output);
-		    } else {
-		      $this->output = preg_replace("/\{\{IF:{$txt}\}\}(.*)\{\{\/IF\}\}/", "", $this->output);
-		    }
-		  }
-		  $this->output = strtr($this->output, array("{{{$txt}}}" => $value));
-		  $this->output = strtr($this->output, array("{{{$txt}|H}}" => rawurlencode($value)));
-		}
+  function assign($data) {
+    $this->data = $data;
+  }
 
-		// Cleanup unused template vars.
-		$this->output = preg_replace("/\{\{([A-Z])+\}\}/", "", $this->output);
-		$this->output = preg_replace("/\{\{([A-Z])+\|H\}\}/", "", $this->output);
-		
-		return $this->output;
+  function display() {
+    print $this->parse();
+  }
 
-	}
+  function inlineTemplate($template) {
+    $this->output = $template;
+  }
 
+  function loadTemplate($template_path) {
+    if (!is_file($template_path) || !is_readable($template_path)) return '';
+    $this->output = file_get_contents($template_path);
+  }
+
+  private function parse() {
+    foreach ($this->data as $key => $value) {
+      $txt = strtoupper($key);
+
+      // TODO: This needs a recursive callback if $value is an array to allow
+      // foreach() type constructs.
+
+      // Straight replace.
+      if (strpos($this->output, "{{IF:{$txt}}}") !== FALSE) {
+        if (strlen($value)) {
+          $this->output = preg_replace("/\{\{IF:{$txt}\}\}(.*)\{\{{$txt}\}\}(.*)\{\{\/IF\}\}/", "\\1{$value}\\2", $this->output);
+        } else {
+          $this->output = preg_replace("/\{\{IF:{$txt}\}\}(.*)\{\{\/IF\}\}/", "", $this->output);
+        }
+      }
+
+      // URLencoded - yay.
+      if (strpos($this->output, "{{IF:{$txt}|H}}") !== FALSE) {
+        $hvalue = rawurlencode($value);
+        if (strlen($hvalue)) {
+          $this->output = preg_replace("/\{\{IF:{$txt}\}\}(.*)\{\{{$txt}\|H\}\}(.*)\{\{\/IF\}\}/", "\\1{$hvalue}\\2", $this->output);
+        } else {
+          $this->output = preg_replace("/\{\{IF:{$txt}\}\}(.*)\{\{\/IF\}\}/", "", $this->output);
+        }
+      }
+      $this->output = strtr($this->output, array("{{{$txt}}}" => $value));
+      $this->output = strtr($this->output, array("{{{$txt}|H}}" => rawurlencode($value)));
+    }
+
+    // Cleanup unused template vars.
+    $this->output = preg_replace("/\{\{([A-Z])+\}\}/", "", $this->output);
+    $this->output = preg_replace("/\{\{([A-Z])+\|H\}\}/", "", $this->output);
+
+    return $this->output;
+  }
 }
