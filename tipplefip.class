@@ -14,6 +14,10 @@
  * $output = "{{IF:SURNAME}}My surname is {{SURNAME}}.{{/IF}}";
  * $data = array('name' => 'Cafuego');
  *   --> "".
+ *
+ * $output = "Click this <a href='{{HREF|H}}'>{{LINK}}</a>.";
+ * $data = array('link' => 'clicky thing', 'href' => '/a test link');
+ *   --> "Click this <a href='%2Fa%20test%20link'>clicky thing</a>.".
  */
 
 // Output data. Usually templated :-)
