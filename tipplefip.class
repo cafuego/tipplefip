@@ -46,3 +46,5 @@ foreach ($data as $key => $value) {
   $output = strtr($output, array("{{{$txt}}}" => $value));
   $output = strtr($output, array("{{{$txt}|H}}" => rawurlencode($value)));
 }
+
+print $output;
