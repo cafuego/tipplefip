@@ -56,14 +56,14 @@ class Tipplefip {
 
       // Loops!
       if (strpos($output, '{{LOOP:'. $txt .'}}') !== FALSE && is_array($value)) {
-        $num = preg_match("/\{\{LOOP:{$txt}\}\}(.*)\{\{{$txt}\}\}(.*)\{\{\/LOOP\}\}/", $output, $matches);
+        $num = preg_match("/\{\{LOOP:{$txt}\}\}(.*)\{\{{$txt}\}\}(.*)\{\{\/LOOP\}\}/", $this->output, $matches);
         // Assemble the replacements.
         $items = array();
         foreach ($value as $key => $val) {
           $items[] = $matches[1] . $val . $matches[2];
         }
         $replace = implode("\n", $items);
-        $output = preg_replace("/\{\{LOOP:{$txt}\}\}(.*)\{\{{$txt}\}\}(.*)\{\{\/LOOP\}\}/", "{$replace}", $output);
+        $this->output = preg_replace("/\{\{LOOP:{$txt}\}\}(.*)\{\{{$txt}\}\}(.*)\{\{\/LOOP\}\}/", "{$replace}", $this->output);
       }
 
       // Straight replace.
