@@ -54,8 +54,17 @@ class Tipplefip {
     foreach ($this->data as $key => $value) {
       $txt = strtoupper($key);
 
-      // TODO: This needs a recursive callback if $value is an array to allow
-      // foreach() type constructs.
+      // Loops!
+      if (strpos($output, '{{LOOP:'. $txt .'}}') !== FALSE && is_array($value)) {
+        $num = preg_match("/\{\{LOOP:{$txt}\}\}(.*)\{\{{$txt}\}\}(.*)\{\{\/LOOP\}\}/", $output, $matches);
+        // Assemble the replacements.
+        $items = array();
+        foreach ($value as $key => $val) {
+          $items[] = $matches[1] . $val . $matches[2];
+        }
+        $replace = implode("\n", $items);
+        $output = preg_replace("/\{\{LOOP:{$txt}\}\}(.*)\{\{{$txt}\}\}(.*)\{\{\/LOOP\}\}/", "{$replace}", $output);
+      }
 
       // Straight replace.
       if (strpos($this->output, "{{IF:{$txt}}}") !== FALSE) {
